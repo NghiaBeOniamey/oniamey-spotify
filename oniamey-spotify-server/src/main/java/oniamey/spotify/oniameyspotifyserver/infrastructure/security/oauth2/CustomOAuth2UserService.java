@@ -2,6 +2,7 @@ package oniamey.spotify.oniameyspotifyserver.infrastructure.security.oauth2;
 
 import lombok.RequiredArgsConstructor;
 import oniamey.spotify.oniameyspotifyserver.entity.User;
+import oniamey.spotify.oniameyspotifyserver.infrastructure.constant.AuthProvider;
 import oniamey.spotify.oniameyspotifyserver.infrastructure.constant.Role;
 import oniamey.spotify.oniameyspotifyserver.infrastructure.constant.Status;
 import oniamey.spotify.oniameyspotifyserver.infrastructure.constant.module.ActorConstants;
@@ -69,10 +70,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = new User();
         user.setUserName(oAuth2UserInfo.getName());
         user.setEmail(email);
-        user.setSubscriptionType("Google");
+        user.setSubscriptionType(AuthProvider.google.name());
         user.setProfilePicture(oAuth2UserInfo.getImageUrl());
         user.setStatus(Status.ACTIVE);
         user.setRole(Role.USER);
+        user.setPassword(null);
         return userRepository.save(user);
     }
 

@@ -5,10 +5,12 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "@/infrastructure/stores/auth.ts";
-import { getUserInformation } from "@/utils/token.helper.ts";
-import { onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import {useAuthStore} from "@/infrastructure/stores/auth";
+import {getUserInformation} from "@/utils/token.helper";
+import {onMounted} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import {ROLES} from "@/infrastructure/constants/role.ts";
+import {ROUTES_CONSTANTS} from "@/infrastructure/constants/path.ts";
 
 const route = useRoute();
 
@@ -16,13 +18,13 @@ const router = useRouter();
 
 const authStore = useAuthStore();
 
-const { state } = route.query;
+const {state} = route.query;
 
 onMounted(() => {
   if (state) {
     const decodedState = atob(state as string);
 
-    const { accessToken, refreshToken } = JSON.parse(decodedState);
+    const {accessToken, refreshToken} = JSON.parse(decodedState);
 
     const user = getUserInformation(accessToken);
 
@@ -32,10 +34,22 @@ onMounted(() => {
       refreshToken,
     });
 
-    router.push({ name: "role-switch" });
+    const userRole = user.roleCode;
+
+    switch (userRole) {
+      case ROLES.ADMIN:
+        router.push({name: ROUTES_CONSTANTS.ADMIN.name});
+        break;
+      case ROLES.USER:
+        router.push({name: ROUTES_CONSTANTS.USER.name});
+        break;
+      default:
+        router.push({name: ROUTES_CONSTANTS.AUTHENTICATION.name});
+        break;
+    }
     return;
   }
-  router.push({ name: "login" });
+  router.push({name: ROUTES_CONSTANTS.AUTHENTICATION.name});
 });
 </script>
 

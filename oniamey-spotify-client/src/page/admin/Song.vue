@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>Quản lý admin feature</h1>
+    <h1>Song Management</h1>
   </div>
 </template>
 
 <script lang="ts">
 export default {
-  name: 'admin feature',
+  name: 'song-management',
 };
 </script>
 

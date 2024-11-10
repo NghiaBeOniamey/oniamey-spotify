@@ -1,7 +1,7 @@
 export const ROUTES_CONSTANTS = {
     AUTHENTICATION: {
-        path: "/authentication",
-        name: "authentication",
+        path: "/",
+        name: "spotify",
         children: {
             LOGIN: {
                 path: "login",
@@ -21,24 +21,36 @@ export const ROUTES_CONSTANTS = {
         path: "/admin",
         name: "admin",
         children: {
-            FEATURE: {
-                path: "feature",
-                name: "feature",
+            USER: {
+                path: "user-management",
+                name: "user-management",
+            },
+            SONG: {
+                path: "song-management",
+                name: "song-management",
+            },
+            LISTENING_TO_MUSIC: {
+                path: "admin-listening-to-music",
+                name: "admin-listening-to-music",
             },
         },
-    },
-    ROLE_SWITCH: {
-        path: "/role-switch",
-        name: "role-switch",
     },
     USER: {
         path: "/user",
         name: "user",
         children: {
-            FEATURE: {
-                path: "feature",
-                name: "feature",
-            }
+            SONG: {
+                path: "song",
+                name: "song",
+            },
+            PLAYLIST: {
+                path: "playlist",
+                name: "playlist",
+            },
+            LISTENING_TO_MUSIC: {
+                path: "user-listening-to-music",
+                name: "user-listening-to-music",
+            },
         },
     },
     NOT_FOUND: {

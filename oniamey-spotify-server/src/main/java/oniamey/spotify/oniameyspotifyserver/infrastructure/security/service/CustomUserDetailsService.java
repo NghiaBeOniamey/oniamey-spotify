@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             return UserPrincipal.create(user, role);
         }
 
-        throw new UsernameNotFoundException("User not found with email : " + email);
+        throw new UsernameNotFoundException("user not found with email : " + email);
     }
 
 }

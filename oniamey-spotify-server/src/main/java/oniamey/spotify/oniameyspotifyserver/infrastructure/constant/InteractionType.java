@@ -1,5 +1,9 @@
 package oniamey.spotify.oniameyspotifyserver.infrastructure.constant;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum InteractionType {
 
     PLAY_BACK,
@@ -8,7 +12,10 @@ public enum InteractionType {
 
     SKIP;
 
-    private InteractionType() {
+    public static List<String> InteractionTypes() {
+        return Arrays.stream(InteractionType.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 
 }

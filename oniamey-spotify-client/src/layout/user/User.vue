@@ -77,7 +77,7 @@
         </div>
       </a-layout-content>
       <a-layout-footer class="text-center">
-        FPL - UDPM ©2021 Created by BIT
+        Spotify Oniamey ©2024 Created by Oniamey
       </a-layout-footer>
     </a-layout>
   </a-layout>
@@ -101,14 +101,14 @@ const router = useRouter();
 
 const handleLogout = () => {
   auth.logout();
-  router.push(ROUTES_CONSTANTS.AUTHENTICATION.children.LOGIN.name);
+  router.push(ROUTES_CONSTANTS.AUTHENTICATION.path);
 };
 const menuItems = ref([
   {
     key: "1",
     icon: UserOutlined,
     label: "FEATURE",
-    path: ROUTES_CONSTANTS.USER.children.FEATURE,
+    path: ROUTES_CONSTANTS.USER.children.USER_FEATURE,
   },
   {
     key: "sub1",

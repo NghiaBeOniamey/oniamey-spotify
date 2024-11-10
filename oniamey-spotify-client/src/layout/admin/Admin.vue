@@ -7,36 +7,18 @@
         :trigger="null"
         collapsible
     >
-      <div class="logo" style="width: 100%; height: 70px">LOGO</div>
-      <a-menu v-model:selectedKeys="selectedKeys" theme="light" mode="inline">
-        <template v-for="item in menuItems">
-          <a-menu-item
-              :key="item.key"
-              v-if="!item.children"
-              @click="handleMenuClick(item.key)"
-          >
-            <component :is="item.icon"/>
-            <span>{{ item.label }}</span>
-          </a-menu-item>
-
-          <a-sub-menu v-else>
-            <template #title>
-              <span>
-                <component :is="item.icon"/>
-                <span>{{ item.label }}</span>
-              </span>
-            </template>
-
-            <a-menu-item
-                v-for="child in item.children"
-                :key="child.key"
-                @click="handleMenuClick(child.key)"
-            >
-              {{ child.label }}
-            </a-menu-item>
-          </a-sub-menu>
-        </template>
-      </a-menu>
+      <div class="w-full flex items-center justify-center">
+        <img class="w-full" :src="logo" alt="logo"/>
+      </div>
+      <a-menu
+          v-model:openKeys="state.openKeys"
+          v-model:selectedKeys="state.selectedKeys"
+          mode="inline"
+          theme="light"
+          :inline-collapsed="collapsed"
+          :items="items"
+          @click="handleClick"
+      ></a-menu>
     </a-layout-sider>
 
     <a-layout>
@@ -77,59 +59,96 @@
         </div>
       </a-layout-content>
       <a-layout-footer class="text-center">
-        FPL - UDPM ©2021 Created by BIT
+        Spotify Oniamey ©2024 Created by Oniamey
       </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
 
 <script lang="ts" setup>
-
-import {computed, ref} from 'vue';
+import logo from "@/assets/image/logo/nobg/svg/logo-big-1.svg"
+import {computed, h, reactive, ref, watch} from 'vue';
 import {useRouter} from 'vue-router';
-import {MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined,} from '@ant-design/icons-vue';
 import {ROUTES_CONSTANTS} from "@/infrastructure/constants/path.ts";
 import {useAuthStore} from "@/infrastructure/stores/auth.ts";
+import {
+  DeploymentUnitOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UsergroupAddOutlined,
+  WeiboOutlined
+} from '@ant-design/icons-vue';
+import {MenuProps} from "ant-design-vue";
+
+const state = reactive({
+  selectedKeys: ['1'],
+  openKeys: ['1'],
+  preOpenKeys: ['1'],
+});
+
+const items = reactive([
+  {
+    key: '1',
+    icon: () => h(UsergroupAddOutlined),
+    label: 'User',
+    title: 'User',
+  },
+  {
+    key: '2',
+    icon: () => h(WeiboOutlined),
+    label: 'Song',
+    title: 'Song',
+  },
+  {
+    key: '3',
+    icon: () => h(DeploymentUnitOutlined),
+    label: 'Listening to music',
+    title: 'Listening to music',
+  },
+]);
+
+watch(
+    () => state.openKeys,
+    (_val, oldVal) => {
+      state.preOpenKeys = oldVal;
+    },
+);
 
 const auth = useAuthStore();
-
 const userInfo = computed(() => auth.user);
-
 const collapsed = ref<boolean>(false);
-const selectedKeys = ref<string[]>(["1"]);
 const router = useRouter();
 
 const handleLogout = () => {
   auth.logout();
-  router.push(ROUTES_CONSTANTS.AUTHENTICATION.children.LOGIN.name);
+  router.push(ROUTES_CONSTANTS.AUTHENTICATION.path);
 };
 
 const menuItems = ref([
   {
     key: "1",
-    icon: UserOutlined,
-    label: "FEATURE",
-    path: ROUTES_CONSTANTS.ADMIN.children.FEATURE,
+    label: "UserManagement",
+    path: ROUTES_CONSTANTS.ADMIN.children.USER.path,
   },
   {
-    key: "sub1",
-    label: "Thống kê",
-    icon: UserOutlined,
-    children: [
-      {key: '2', label: 'Chi tiết tương tác', path: '/authentication/statistical-interaction'},
-      {key: '3', label: 'Theo menu', path: '/authentication/statistical-menu'},
-      {key: '4', label: 'Theo nút', path: '/authentication/statistical-button'},
-    ],
+    key: "2",
+    label: "SongManagement",
+    path: ROUTES_CONSTANTS.ADMIN.children.SONG.path,
+  },
+  {
+    key: "3",
+    label: "Listening to music",
+    path: ROUTES_CONSTANTS.ADMIN.children.LISTENING_TO_MUSIC.path,
   },
 ]);
 
-const handleMenuClick = (key: string) => {
-  selectedKeys.value = [key];
+
+const handleClick: MenuProps['onClick'] = e => {
+  const key = e?.key;
   const item = menuItems.value.find(
-      (menuItem) =>
-          menuItem.key === key ||
+      (menuItem) => menuItem.key === key ||
           menuItem.children?.some((child) => child.key === key)
-  );
+  )
   if (item) {
     const target = item.children?.find((child) => child.key === key) || item;
     if (target?.path) {

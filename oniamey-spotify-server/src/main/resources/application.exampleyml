@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT:5412}
+  port: ${SERVER_PORT:0512}
 spring:
   application:
     name: spotify-server

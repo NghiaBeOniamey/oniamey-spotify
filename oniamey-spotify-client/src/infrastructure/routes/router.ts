@@ -5,8 +5,8 @@ import {useAuthStore} from "@/infrastructure/stores/auth.ts";
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: "/",
-        name: "spotify",
+        path: ROUTES_CONSTANTS.AUTHENTICATION.path,
+        name: ROUTES_CONSTANTS.AUTHENTICATION.name,
         component: () => import("@/layout/authentication/Spotify.vue"),
         redirect: ROUTES_CONSTANTS.AUTHENTICATION.children.LOGIN,
         meta: {
@@ -39,11 +39,11 @@ const routes: Array<RouteRecordRaw> = [
             requiresRole: ROLES.USER,
             requiresAuth: true
         },
-        redirect: ROUTES_CONSTANTS.USER.children.FEATURE,
+        redirect: ROUTES_CONSTANTS.USER.children.LISTENING_TO_MUSIC,
         children: [
             {
-                path: ROUTES_CONSTANTS.USER.children.FEATURE.path,
-                name: ROUTES_CONSTANTS.USER.children.FEATURE.name,
+                path: ROUTES_CONSTANTS.USER.children.LISTENING_TO_MUSIC.path,
+                name: ROUTES_CONSTANTS.USER.children.LISTENING_TO_MUSIC.name,
                 component: () => import('@/page/user/Feature.vue'),
                 meta: {
                     requiresRole: ROLES.USER,
@@ -60,12 +60,30 @@ const routes: Array<RouteRecordRaw> = [
             requiresRole: ROLES.ADMIN,
             requiresAuth: true
         },
-        redirect: ROUTES_CONSTANTS.ADMIN.children.FEATURE,
+        redirect: ROUTES_CONSTANTS.ADMIN.children.USER,
         children: [
             {
-                path: ROUTES_CONSTANTS.ADMIN.children.FEATURE.path,
-                name: ROUTES_CONSTANTS.ADMIN.children.FEATURE.name,
-                component: () => import('@/page/admin/Feature.vue'),
+                path: ROUTES_CONSTANTS.ADMIN.children.USER.path,
+                name: ROUTES_CONSTANTS.ADMIN.children.USER.name,
+                component: () => import('@/page/admin/User.vue'),
+                meta: {
+                    requiresRole: ROLES.ADMIN,
+                    requiresAuth: true
+                },
+            },
+            {
+                path: ROUTES_CONSTANTS.ADMIN.children.SONG.path,
+                name: ROUTES_CONSTANTS.ADMIN.children.SONG.name,
+                component: () => import('@/page/admin/Song.vue'),
+                meta: {
+                    requiresRole: ROLES.ADMIN,
+                    requiresAuth: true
+                },
+            },
+            {
+                path: ROUTES_CONSTANTS.ADMIN.children.LISTENING_TO_MUSIC.path,
+                name: ROUTES_CONSTANTS.ADMIN.children.LISTENING_TO_MUSIC.name,
+                component: () => import('@/page/admin/ListeningToMusic.vue'),
                 meta: {
                     requiresRole: ROLES.ADMIN,
                     requiresAuth: true
@@ -96,7 +114,7 @@ route.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
     const requiresAuth = to.matched && Array.isArray(to.matched) && to.matched.some((record) => record?.meta?.requiresAuth);
     const requiresRole = to.matched && Array.isArray(to.matched) && to.matched.some((record) => record?.meta?.requiresRole);
-    const userRole = authStore?.user?.roleCode || null;
+    const userRole = authStore?.user?.roleCode;
     if (userRole === null && requiresAuth) {
         next({name: ROUTES_CONSTANTS.AUTHENTICATION.children.LOGIN.name});
     } else if (requiresAuth && !authStore.isAuthenticated) {
@@ -104,6 +122,7 @@ route.beforeEach((to, from, next) => {
     } else if (requiresRole && (!userRole || userRole !== to.meta.requiresRole)) {
         next({name: ROUTES_CONSTANTS.AUTHENTICATION.children.LOGIN.name});
     } else {
+        console.log(userRole);
         next();
     }
 

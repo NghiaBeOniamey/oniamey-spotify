@@ -29,6 +29,9 @@ public class User extends PrimaryEntity implements Serializable {
     @Column(length = 100, nullable = false)
     private String email;
 
+    @Column(length = 100, name = "password_hash")
+    private String password;
+
     @Column(length = 50)
     private String subscriptionType;
 
@@ -36,9 +39,9 @@ public class User extends PrimaryEntity implements Serializable {
     private String profilePicture;
 
     @Enumerated(EnumType.ORDINAL)
-    private Status status;
+    private Role role;
 
     @Enumerated(EnumType.ORDINAL)
-    private Role role;
+    private Status status;
 
 }

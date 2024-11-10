@@ -42,7 +42,7 @@ public class TokenProvider {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         User user = getCurrentUserLogin(userPrincipal.getEmail());
 
-        if (user == null) throw new BadRequestException("User not found");
+        if (user == null) throw new BadRequestException("user not found");
 
         InfoUserSpotifyResponse infoUserSpotifyResponse = getInfoUserSpotifyResponse(user);
         String subject = new ObjectMapper().writeValueAsString(infoUserSpotifyResponse);
@@ -53,14 +53,14 @@ public class TokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
                 .setExpiration(new java.util.Date(TOKEN_EXP))
-                .setIssuer("udpm.hn")
+                .setIssuer("oniamey.spotify")
                 .signWith(Keys.hmacShaKeyFor(tokenSecret.getBytes()))
                 .compact();
     }
 
     public String createToken(String userId) throws BadRequestException, JsonProcessingException {
         User user = userAuthRepository.findById(userId).orElse(null);
-        if (user == null) throw new BadRequestException("User not found");
+        if (user == null) throw new BadRequestException("user not found");
 
         InfoUserSpotifyResponse response = getInfoUserSpotifyResponse(user);
         String subject = new ObjectMapper().writeValueAsString(response);
