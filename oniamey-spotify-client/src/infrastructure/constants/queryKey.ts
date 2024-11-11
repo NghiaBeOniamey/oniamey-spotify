@@ -6,8 +6,13 @@ export const queryKey = {
         register: "registerKey"
     },
     admin: {
-        another: {},
-        something: {},
+        user: {
+            userList: "adUserListKey",
+            userDetail: "adUserDetailKey",
+            userCreate: "adUserCreateKey",
+            userUpdate: "adUserUpdateKey",
+            userDelete: "adUserDeleteKey"
+        }
 
     },
 

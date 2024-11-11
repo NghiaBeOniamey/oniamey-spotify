@@ -59,18 +59,18 @@
         <v-icon width="40" height="40" name="fc-google"/>
       </button>
       <button
-          @click="handleLoginGoogle"
+          @click="handleLoginGithub"
           type="button"
           class="p-2 border-2 rounded-2xl text-gray-900"
-          :disabled="isLoginGoogle"
+          :disabled="isLoginGithub"
       >
         <v-icon width="40" height="40" name="vi-folder-type-github-opened"/>
       </button>
       <button
-          @click="handleLoginGoogle"
+          @click="handleLoginFacebook"
           type="button"
           class="p-2 border-2 rounded-2xl text-gray-900"
-          :disabled="isLoginGoogle"
+          :disabled="isLoginFacebook"
       >
         <v-icon width="40" height="40" size="x-large" name="md-facebook" class="text-blue-800"/>
       </button>
@@ -79,7 +79,7 @@
 </template>
 
 <script lang="ts" setup>
-import {URL_FRONTEND, URL_OAUTH2_GOOGLE} from "@/infrastructure/constants/url";
+import {URL_FRONTEND, URL_OAUTH2_FACEBOOK, URL_OAUTH2_GITHUB, URL_OAUTH2_GOOGLE} from "@/infrastructure/constants/url";
 import {ROUTES_CONSTANTS} from "@/infrastructure/constants/path.ts";
 import router from "@/infrastructure/routes/router.ts";
 import {computed, reactive, ref, watch} from "vue";
@@ -89,8 +89,10 @@ import {keepPreviousData} from "@tanstack/vue-query";
 import {useLogin} from "@/infrastructure/services/service/authentication/authentication.action.ts";
 import {LoginForm} from "@/infrastructure/services/api/authentication/authentication.api.ts";
 
-const isLoginPass = ref(false);
-const isLoginGoogle = ref(false);
+let isLoginPass = ref(false);
+let isLoginGoogle = ref(false);
+let isLoginGithub = ref(false);
+let isLoginFacebook = ref(false);
 
 const modelRef = reactive<LoginForm>({
   email: "",
@@ -171,8 +173,23 @@ const handleLoginGoogle = () => {
       "URL_OAUTH2_GOOGLE + URL_FRONTEND",
       URL_OAUTH2_GOOGLE + URL_FRONTEND
   );
-
   window.location.href = URL_OAUTH2_GOOGLE + URL_FRONTEND;
 };
 
+const handleLoginGithub = () => {
+  console.log(
+      "URL_OAUTH2_GITHUB + URL_FRONTEND",
+      URL_OAUTH2_GITHUB + URL_FRONTEND
+  );
+  window.location.href = URL_OAUTH2_GITHUB + URL_FRONTEND;
+};
+
+const handleLoginFacebook = () => {
+  console.log(
+      "URL_OAUTH2_FACEBOOK + URL_FRONTEND",
+      URL_OAUTH2_FACEBOOK + URL_FRONTEND
+  );
+  toast.warning("Facebook login is not supported");
+  // window.location.href = URL_OAUTH2_FACEBOOK + URL_FRONTEND;
+};
 </script>

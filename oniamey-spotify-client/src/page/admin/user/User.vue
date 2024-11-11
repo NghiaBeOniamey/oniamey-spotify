@@ -31,4 +31,12 @@ export default {
 
 <script lang="ts" setup>
 
+import {ref} from "vue";
+
+const params = ref<ParamsGetPlans>({
+  page: 1,
+  size: 10,
+});
+
+
 </script>

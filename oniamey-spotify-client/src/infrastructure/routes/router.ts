@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: ROUTES_CONSTANTS.ADMIN.children.USER.path,
                 name: ROUTES_CONSTANTS.ADMIN.children.USER.name,
-                component: () => import('@/page/admin/User.vue'),
+                component: () => import('@/page/admin/user/User.vue'),
                 meta: {
                     requiresRole: ROLES.ADMIN,
                     requiresAuth: true
