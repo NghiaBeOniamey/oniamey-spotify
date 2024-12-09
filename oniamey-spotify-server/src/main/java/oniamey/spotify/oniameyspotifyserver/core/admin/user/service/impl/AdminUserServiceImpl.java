@@ -3,7 +3,7 @@ package oniamey.spotify.oniameyspotifyserver.core.admin.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import oniamey.spotify.oniameyspotifyserver.core.admin.user.model.request.AdminFindUserRequest;
 import oniamey.spotify.oniameyspotifyserver.core.admin.user.model.request.AdminUserRequest;
-import oniamey.spotify.oniameyspotifyserver.core.admin.user.repository.AdminUserRepository;
+import oniamey.spotify.oniameyspotifyserver.core.admin.user.repository.AUUserRepository;
 import oniamey.spotify.oniameyspotifyserver.core.admin.user.service.AdminUserService;
 import oniamey.spotify.oniameyspotifyserver.core.common.base.PageableObject;
 import oniamey.spotify.oniameyspotifyserver.core.common.base.ResponseObject;
@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminUserServiceImpl implements AdminUserService {
 
-    private final AdminUserRepository userRepository;
+    private final AUUserRepository userRepository;
 
     @Override
     public ResponseObject<?> getUsers(AdminFindUserRequest request) {
